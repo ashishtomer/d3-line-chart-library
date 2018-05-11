@@ -190,14 +190,10 @@ var $_lineChart = (function() {
 		 	yValues = yValues.concat(dataset.map(function(o) {return o[temp[1]]}));	
 		});
 
-		console.log(xValues.sort(function(a, b) { if (a < b) return a;}));
-
 		_xMax = xValues.sort(function(a, b) { return a < b ;})[0];
 		_xMin = xValues.sort(function(a, b) { return a > b;})[0];
 		_yMax = yValues.sort(function(a, b) { return a < b;})[0];
 		_yMin = yValues.sort(function(a, b) { return a > b;})[0];
-
-		console.log(_yMax);
 	}
 
 	var renderLines = function(svg, data) {
@@ -220,7 +216,6 @@ var $_lineChart = (function() {
 				})
 			return line(d);
 		}
-		
 
 		var i = 0;
 		data.map(function(dataset){
@@ -244,26 +239,46 @@ var $_lineChart = (function() {
 	};
 
 	function renderAreas(svg, data) {
-        var area = d3.svg.area() // <-A
-                    .x(function(d) { return _xScale(d[0]); })
-                    .y0(0)
-                    .y1(function(d) { return _yScale(d[1]); });
+		var _xScale = d3.scale.linear()
+			.domain([_xMin, _xMax])
+			.range([_margins.left, _width - _margins.right]);
 
-        svg.selectAll("path.area")
-                .data([data])
-                .enter() // <-B
-                .append("path")
-                .style("fill", function (d, i) {
-                    return _colors(i);
-                })
-                .attr("class", "area");
+		var _yScale = d3.scale.linear()
+			.domain([_yMin, _yMax])
+			.range([ _height - _margins.bottom, _margins.top]);
+		
+		function generateAreaPoints(d, i) {
+			var area = d3.svg.area()
+				.interpolate('monotone')
+				.x(function(d) {
+					return _xScale(d[_chartKeys[i][0]]);
+				})
+				.y0(_yScale(_yMin))
+				.y1(function(d) {
+					return _yScale(d[_chartKeys[i][1]]);
+				})
+			return area(d);
+		}
 
-        svg.selectAll("path.area")
-                .data(data)
-                .transition() // <-D
-                .attr("d", function (d) {
-                    return area(data); // <-E
-                });
+        var i = 0;
+        data.map(function(dataset) {
+        	svg.selectAll('path.area-' + i)
+        		.data([dataset])
+    		.enter()
+        		.append('path')
+        		.classed('area-' + i, true)
+        		.style({
+        			'fill': _colors(i),
+        			'stroke-width': '2',
+					'stroke': _colors(i),
+					'opacity' : '0.1'
+        		})
+        		.attr('d', function(d) {
+        			console.log('drawing area')
+        			return generateAreaPoints(d, i);
+        		})
+        	i++;
+        });
     }
 
 	_lineChart.render = function(div, ...data) {
@@ -303,18 +318,14 @@ var $_lineChart = (function() {
 			.domain([0, 1000])
 			.range([0, 5000])
 
-		console.log('_xMin: ' + _xMin)
-		console.log('_xMax: ' + _xMax)
-		console.log('scaled _xMin: ' + scale(1));
-
 		_yScale = d3.scale.linear()
 			.domain([_yMin, _yMax])
 			.range([_height - _margins.top - _margins.bottom, 0]);
 
 		renderAxes(svg);
-		renderPoints(svg, data);
+		renderAreas(svg, data);
 		renderLines(svg, data);
-		renderAreas(svg, data[0]);
+		renderPoints(svg, data);
 	}
 
 	return _lineChart;
