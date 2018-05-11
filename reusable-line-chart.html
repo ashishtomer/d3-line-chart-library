@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>reusable-line-chart</title>
+	<script type="text/javascript" src="./d3.min.js"></script>
+	<script type="text/javascript" src="./d3-line-chart.js"></script>
+
+	<style type="text/css">
+		
+		div#line-chart {
+			min-height: 500px;
+			max-width: 800px;
+			margin: 0px auto;
+			background-color : #2e2e2e;
+		}
+
+		g.x-axis g.tick text {
+		    font-size: 10px;
+		    fill: #fff;
+		}
+
+		g.y-axis g.tick text {
+		    font-size: 10px;
+		    fill: #fff;
+		}
+
+	</style>
+</head>
+<body>
+	<div id="line-chart"></div>
+
+	<script type="text/javascript">
+		var data0 = [
+			{fx: 100, y: 983},
+			{fx: 200, y: 943},
+			{fx: 300, y: 57},
+			{fx: 400, y: 353},
+			{fx: 500, y: 571},
+			{fx: 600, y: 732},
+			{fx: 700, y: 842},
+			{fx: 800, y: 638},
+			{fx: 900, y: 629},
+			{fx: 1000, y: 481},
+			{fx: 1100, y: 47},
+			{fx: 1200, y: 89},
+			{fx: 1300, y: 326},
+			{fx: 1400, y: 142},
+			{fx: 1500, y: 178}
+		];
+
+		var data1 = [
+			{fx: 100, y: 123},
+			{fx: 200, y: 934},
+			{fx: 300, y: 503},
+			{fx: 400, y: 302},
+			{fx: 500, y: 192},
+			{fx: 600, y: 533},
+			{fx: 700, y: 634},
+			{fx: 800, y: 203},
+			{fx: 900, y: 602},
+			{fx: 1000, y: 195},
+			{fx: 1100, y: 230},
+			{fx: 1200, y: 400},
+			{fx: 1300, y: 589},
+			{fx: 1400, y: 302},
+			{fx: 1500, y: 1078}
+		];
+
+		var data2 = [
+			{fx: -100, y: 33},
+			{fx: 200, y: 554},
+			{fx: 300, y: 583},
+			{fx: 400, y: 842},
+			{fx: 500, y: 112},
+			{fx: 600, y: 546},
+			{fx: 700, y: 842},
+			{fx: 800, y: 104},
+			{fx: 900, y: 96},
+			{fx: 1000, y: 841},
+			{fx: 1100, y: 531},
+			{fx: 1200, y: 319},
+			{fx: 1300, y: 589},
+			{fx: 1400, y: 314},
+			{fx: 1500, y: 1132}
+		];
+
+		var data3 = [
+			{fx: 100, y: 438},
+			{fx: 200, y: 28},
+			{fx: 300, y: 492},
+			{fx: 400, y: 42},
+			{fx: 500, y: 521},
+			{fx: 600, y: 52},
+			{fx: 700, y: 841},
+			{fx: 800, y: 473},
+			{fx: 900, y: 831},
+			{fx: 1000, y: 47},
+			{fx: 1100, y: 931},
+			{fx: 1200, y: 328},
+			{fx: 1300, y: 391},
+			{fx: 1400, y: 299},
+			{fx: 1500, y: 218}
+		];
+
+		$_lineChart.render('div#line-chart', data0, data1, data2, data3);
+
+	</script>
+</body>
+</html>
